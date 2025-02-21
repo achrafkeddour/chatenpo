@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Arab Chat - Enhanced Communication</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container-fluid chat-container">
+    <div id="app" class="row h-100 m-0 p-0">
+      <div id="userList" class="col-12 col-md-4 col-lg-3 user-list d-none d-md-flex flex-column p-0">
+        <div class="user-list-header d-flex align-items-center justify-content-between p-3">
+          <div class="d-flex align-items-center">
+            <img src="site.png" alt="User Avatar" class="avatar me-2" />
+            <h5 class="mb-0 text-white">Arab Chat</h5>
+          </div>
+          <div class="header-controls">
+            <button class="btn feature-btn me-2" id="themeToggle" title="Toggle Theme">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </div>
+        <div class="user-search p-2">
+          <input type="text" id="userSearch" class="form-control" placeholder="Search Users..." />
+        </div>
+        <h5 class="online-users-title text-center p-2">Online Users</h5>
+        <div class="user-list-body flex-grow-1 overflow-auto">
+          <!-- Dynamically populated by script.js -->
+        </div>
+        <div class="user-list-footer p-2 text-center">
+          <small>Total Users Online: <span id="onlineCount">0</span></small>
+        </div>
+      </div>
+
+      <div id="conversationView" class="col-12 col-md-8 col-lg-9 conversation-view d-flex flex-column p-0">
+        <div id="conversationHeader" class="conversation-header d-flex align-items-center px-3 py-2">
+          <button class="btn btn-light d-md-none me-2" onclick="showUserList()">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+          <h5 id="conversationTitle" class="mb-0 flex-grow-1">Select a User to Chat</h5>
+          <div class="header-actions">
+            <button class="btn btn-success me-2" onclick="initiateVoiceCall()" title="Start Voice Call">
+              <i class="fas fa-phone"></i>
+            </button>
+            <button class="btn btn-primary me-2" onclick="initiateVideoCall()" title="Start Video Call">
+              <i class="fas fa-video"></i>
+            </button>
+            <button class="btn btn-info" onclick="showUserProfile()" title="User Profile">
+              <i class="fas fa-user"></i>
+            </button>
+          </div>
+        </div>
+        <div id="messages" class="messages flex-grow-1 p-3 overflow-auto">
+          <!-- Messages will be appended here -->
+        </div>
+        <div id="typingIndicator" class="px-3 py-2 text-muted"></div>
+        <form id="form" class="chat-input d-flex align-items-center p-3">
+          <textarea id="message" class="form-control me-2" rows="2" placeholder="Type your message here..."></textarea>
+          <div class="input-actions d-flex align-items-center">
+            <label for="image" class="btn btn-outline-secondary me-2 mb-0" title="Attach Image">
+              <i class="fa fa-paperclip"></i>
+            </label>
+            <input type="file" id="image" class="d-none" accept="image/*" />
+            <button class="btn btn-primary" type="submit" title="Send Message">
+              <i class="fas fa-paper-plane"></i> Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call Modal (Voice and Video) -->
+  <div id="callModal" class="modal-overlay">
+    <div id="callContainer" class="modal-content">
+      <h4 id="callStatus">Incoming Call</h4>
+      <p id="callerInfo">Waiting for response...</p>
+      <!-- Video Elements -->
+      <div id="videoContainer" style="display: none;">
+        <video id="localVideo" autoplay muted playsinline class="local-video"></video>
+        <video id="remoteVideo" autoplay playsinline class="remote-video"></video>
+      </div>
+      <div id="callButtons" class="modal-buttons">
+        <button class="btn btn-success me-2" onclick="answerCall()">Accept Call</button>
+        <button class="btn btn-danger" onclick="declineCall()">Decline Call</button>
+      </div>
+      <div id="inCallControls" class="modal-controls" style="display: none;">
+        <p>Connected with <span id="activeCallUser"></span></p>
+        <button class="btn btn-warning" onclick="endCall()">End Call</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div id="profileModal" class="modal-overlay">
+    <div class="modal-content">
+      <h4>User Profile</h4>
+      <div id="profileDetails">
+        <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+        <p><strong>Status:</strong> <span id="profileStatus">Online</span></p>
+        <p><strong>Last Seen:</strong> <span id="profileLastSeen"></span></p>
+      </div>
+      <button class="btn btn-secondary" onclick="hideProfileModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Image Preview Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Image Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="imageModalImg" src="" class="img-fluid" alt="Preview" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+  <audio id="ringtone" src="ringtone.mp3" preload="auto" loop></audio>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
