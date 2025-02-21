@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register - Arab Chat</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(45deg, #a47dff, #5c5ee2, #039faa);
+      --button-gradient: linear-gradient(45deg, #667eea, #764ba2);
+      --button-hover: linear-gradient(45deg, #5a67d8, #6b46c1);
+      --text-color: #333;
+      --card-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    [data-theme="dark"] {
+      --primary-gradient: linear-gradient(45deg, #2a1b4f, #1e1e3f, #013940);
+      --button-gradient: linear-gradient(45deg, #4a5ed8, #5a2e8c);
+      --button-hover: linear-gradient(45deg, #3d4eb8, #4a2375);
+      --text-color: #fff;
+      --card-bg: rgba(40, 40, 40, 0.9);
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background: var(--primary-gradient);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .register-container {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 450px;
+      transition: all 0.3s ease;
+    }
+
+    .register-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .register-container h1 {
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+
+    .form-control,
+    select {
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.7);
+      margin-bottom: 1.5rem;
+      padding: 0.9rem 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus,
+    select:focus {
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+      background: rgba(255,255,255,1);
+      border: 1px solid rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-primary {
+      background: var(--button-gradient);
+      border: none;
+      border-radius: 12px;
+      padding: 0.9rem;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--button-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .feature-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      justify-content: center;
+    }
+
+    .feature-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .feature-btn:hover {
+      background: rgba(255,255,255,0.4);
+      transform: scale(1.1);
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-color);
+    }
+
+    .register-link a {
+      color: #667eea;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .register-link a:hover {
+      color: #5a67d8;
+    }
+
+    .input-group-text {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 0 12px 12px 0;
+    }
+
+    @media (max-width: 576px) {
+      .register-container {
+        padding: 1.5rem;
+        max-width: 100%;
+        margin: 10px;
+      }
+
+      .register-container h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="feature-buttons">
+      <button class="feature-btn" id="themeToggle" title="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="feature-btn" id="langSwitch" title="Switch Language">
+        <i class="fas fa-globe"></i>
+      </button>
+    </div>
+    <h1>Register</h1>
+    <form action="/register" method="POST" id="registerForm">
+      <div class="input-group mb-3">
+        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+        <span class="input-group-text"><i class="fas fa-user"></i></span>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" name="username" class="form-control" placeholder="Username" required>
+        <span class="input-group-text"><i class="fas fa-at"></i></span>
+      </div>
+      <div class="input-group mb-3">
+        <input type="password" name="password" class="form-control" placeholder="Password" required id="passwordInput">
+        <span class="input-group-text toggle-password" style="cursor: pointer;">
+          <i class="fas fa-eye" id="toggleIcon"></i>
+        </span>
+      </div>
+      <div class="input-group mb-3">
+        <input type="date" name="dob" class="form-control" required>
+        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+      </div>
+      <div class="input-group mb-3">
+        <select name="sexe" class="form-control" required>
+          <option value="">Select Gender</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p class="register-link">Already have an account? <a href="/index.html">Login here</a></p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    themeToggle.addEventListener('click', () => {
+      body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+      themeToggle.querySelector('i').classList.toggle('fa-moon');
+      themeToggle.querySelector('i').classList.toggle('fa-sun');
+    });
+
+    // Password Toggle
+    const togglePassword = document.querySelector('.toggle-password');
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      toggleIcon.classList.toggle('fa-eye');
+      toggleIcon.classList.toggle('fa-eye-slash');
+    });
+
+    // Language Switcher (Basic example)
+    const langSwitch = document.getElementById('langSwitch');
+    langSwitch.addEventListener('click', () => {
+      const currentLang = document.documentElement.lang;
+      document.documentElement.lang = currentLang === 'en' ? 'ar' : 'en';
+      alert('Language switched to: ' + document.documentElement.lang);
+    });
+  </script>
+</body>
+</html>
