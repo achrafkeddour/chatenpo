@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arab Chat - Global Communication</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-bg: #e6f3f8; /* Soft white-blue */
+      --secondary-bg: #ffffff; /* Pure white */
+      --text-color: #2c3e50; /* Dark blue-gray */
+      --accent-blue: #3498db; /* Vibrant blue */
+      --accent-green: #2ecc71; /* Fresh green */
+      --accent-white: #ecf0f1; /* Off-white */
+      --button-bg: linear-gradient(135deg, #3498db, #2ecc71); /* Blue-green gradient */
+      --button-hover: linear-gradient(135deg, #2980b9, #27ae60); /* Darker blue-green */
+      --card-border: #b3d9e6; /* Light blue-green */
+      --shadow: 0 6px 18px rgba(52, 152, 219, 0.15); /* Subtle blue shadow */
+      --red-accent: #e74c3c; /* Subtle red */
+    }
+
+    [data-theme="dark"] {
+      --primary-bg: #1e2a38; /* Dark blue-gray */
+      --secondary-bg: #2c3e50; /* Darker blue-gray */
+      --text-color: #ecf0f1; /* Off-white */
+      --accent-blue: #5dade2; /* Lighter blue */
+      --accent-green: #52d681; /* Lighter green */
+      --accent-white: #34495e; /* Darker off-white */
+      --button-bg: linear-gradient(135deg, #5dade2, #52d681); /* Blue-green gradient */
+      --button-hover: linear-gradient(135deg, #4e95c8, #45b967); /* Darker blue-green */
+      --card-border: #4a6782; /* Dark blue-green */
+      --shadow: 0 6px 18px rgba(93, 173, 226, 0.2); /* Subtle blue shadow */
+      --red-accent: #c0392b; /* Darker red */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', 'Cairo', sans-serif;
+      min-height: 100vh;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      flex-wrap: wrap;
+      gap: 4rem;
+      position: relative;
+    }
+
+    .info-section {
+      max-width: 50%;
+      padding: 2.5rem;
+      animation: fadeIn 1s ease-out;
+      margin-top: -100px !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .info-section h1 {
+      font-family: 'Cairo', sans-serif;
+      font-size: 5rem;
+      font-weight: 700;
+      margin-bottom: 1.95rem;
+      color: var(--accent-blue);
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+
+    .info-section h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--red-accent);
+      border-radius: 2px;
+    }
+
+    .info-section p {
+      font-size: 1.3rem;
+      line-height: 1.9;
+      color: var(--text-color);
+    }
+
+    .login-container {
+      background: var(--secondary-bg);
+      border-radius: 15px;
+      padding: 3rem;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--card-border);
+      max-width: 480px;
+      width: 100%;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .login-container h2 {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 2.5rem;
+      text-align: center;
+      font-size: 2.25rem;
+    }
+
+    .login-container h2::after {
+      content: '';
+      display: block;
+      width: 70px;
+      height: 3px;
+      background: var(--accent-blue);
+      margin: 0.75rem auto;
+      border-radius: 2px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .form-control {
+      border-radius: 25px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1.2rem 2rem;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      transition: all 0.4s ease;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 20px rgba(72, 202, 228, 0.5);
+      transform: scale(1.03);
+    }
+
+    .input-group-text {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-color);
+      opacity: 0.8;
+      transition: color 0.3s ease;
+    }
+
+    .input-group-text:hover {
+      color: var(--accent-blue);
+    }
+
+    .btn-primary {
+      background: var(--button-bg);
+      border: none;
+      border-radius: 10px;
+      padding: 1.1rem;
+      font-weight: 600;
+      font-size: 1.15rem;
+      width: 100%;
+      color: #ffffff;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--button-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+    }
+
+    .feature-buttons {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .feature-btn {
+      background: var(--accent-blue);
+      border: none;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      color: #ffffff;
+      transition: background 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+
+    .feature-btn:hover {
+      background: var(--accent-green);
+      transform: scale(1.15);
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 2.5rem;
+      color: var(--text-color);
+      font-size: 1.1rem;
+    }
+
+    .register-link a {
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .register-link a:hover {
+      color: var(--red-accent);
+      text-decoration: underline;
+    }
+
+    /* Enhanced Responsiveness */
+    @media (max-width: 1200px) {
+      .container {
+        padding: 2rem;
+        gap: 3rem;
+      }
+
+      .info-section {
+        max-width: 55%;
+        margin-top: 0 !important;
+      }
+
+      .info-section h1 {
+        font-size: 3.25rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .info-section {
+        max-width: 60%;
+      }
+
+      .info-section h1 {
+        font-size: 3rem;
+        margin-top: 0 !important;
+      }
+
+      .info-section p {
+        font-size: 1.2rem;
+      }
+
+      .login-container {
+        max-width: 420px;
+        padding: 2.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 2rem;
+      }
+
+      .info-section {
+        max-width: 100%;
+        text-align: center;
+        margin-top: 0 !important;
+        padding: 2rem;
+      }
+
+      .info-section h1 {
+        font-size: 2.75rem !important;
+      }
+
+      .info-section h1::after {
+        margin: 0 auto;
+      }
+
+      .info-section p {
+        font-size: 1.1rem;
+      }
+
+      .login-container {
+        max-width: 100%;
+        padding: 2rem;
+      }
+
+      .feature-btn {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .info-section h1 {
+        font-size: 2.25rem;
+        margin-top: 0 !important;
+      }
+
+      .info-section p {
+        font-size: 1rem;
+      }
+
+      .login-container h2 {
+        font-size: 1.9rem;
+      }
+
+      .btn-primary {
+        font-size: 1.05rem;
+        padding: 1rem;
+      }
+
+      .feature-buttons {
+        gap: 1.5rem;
+      }
+
+      .feature-btn {
+        width: 45px;
+        height: 45px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="info-section">
+      <h1>Arab Chat</h1>
+      <p>Connect with the global Arabic community through secure, reliable, and professional communication tools designed for meaningful interactions.</p>
+    </div>
+    <div class="login-container">
+      <div class="feature-buttons">
+        <button class="feature-btn" id="themeToggle" title="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="feature-btn" id="langSwitch" title="Switch Language">
+          <i class="fas fa-globe"></i>
+        </button>
+      </div>
+      <h2>Welcome kho !</h2>
+      <form action="/login" method="POST" id="loginForm">
+        <div class="input-group">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" class="form-control" placeholder="Password" required id="passwordInput">
+          <span class="input-group-text toggle-password" style="cursor: pointer;">
+            <i class="fas fa-eye" id="toggleIcon"></i>
+          </span>
+        </div>
+        <div class="form-check mb-4">
+          <input type="checkbox" class="form-check-input" id="rememberMe">
+          <label class="form-check-label" for="rememberMe" style="color: var(--text-color)">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+      </form>
+      <p class="register-link">New to Arab Chat? <a href="/register.html">Create Account</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', () => {
+      body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+      themeToggle.querySelector('i').classList.toggle('fa-moon');
+      themeToggle.querySelector('i').classList.toggle('fa-sun');
+    });
+
+    const togglePassword = document.querySelector('.toggle-password');
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      toggleIcon.classList.toggle('fa-eye');
+      toggleIcon.classList.toggle('fa-eye-slash');
+    });
+
+    const langSwitch = document.getElementById('langSwitch');
+    langSwitch.addEventListener('click', () => {
+      const currentLang = document.documentElement.lang;
+      document.documentElement.lang = currentLang === 'en' ? 'ar' : 'en';
+      const loginContainer = document.querySelector('.login-container');
+      loginContainer.style.direction = currentLang === 'en' ? 'rtl' : 'ltr';
+      alert('Language switched to: ' + document.documentElement.lang);
+    });
+  </script>
+</body>
+</html>
